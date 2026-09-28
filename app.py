@@ -18,11 +18,9 @@ if not API_KEY:
         API_KEY = st.secrets["HINDSIGHT_API_KEY"]
     except Exception:
         API_KEY = None
-
 if not API_KEY:
-    st.error("HINDSIGHT_API_KEY is missing from your .env file.")
+    st.error("HINDSIGHT_API_KEY is missing. Please add it to your .env file or Streamlit Secrets.")
     st.stop()
-
 
 client = Hindsight(
     base_url="https://api.hindsight.vectorize.io",
