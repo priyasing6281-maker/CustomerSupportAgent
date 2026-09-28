@@ -18,9 +18,12 @@ if not API_KEY:
         API_KEY = st.secrets["HINDSIGHT_API_KEY"]
     except Exception:
         API_KEY = None
-st.write("Secret detected:", "HINDSIGHT_API_KEY" in st.secrets)
+
 if not API_KEY:
-    st.error("HINDSIGHT_API_KEY is missing. Please add it to your .env file or Streamlit Secrets.")
+    st.error(
+        "HINDSIGHT_API_KEY is missing. "
+        "Please add it to your .env file or Streamlit Secrets."
+    )
     st.stop()
 
 client = Hindsight(
@@ -153,10 +156,6 @@ with chat_col2:
 
 async def live_support(name, message):
 
-    # -------------------------------------------------
-    # STEP 1: RECALL PREVIOUS CUSTOMER MEMORY
-    # -------------------------------------------------
-
     memories = await client.arecall(
         bank_id="customer-support",
         query=(
@@ -164,10 +163,6 @@ async def live_support(name, message):
             f"customer {name} report?"
         )
     )
-
-    # -------------------------------------------------
-    # STEP 2: GENERATE CONTEXT-AWARE RESPONSE
-    # -------------------------------------------------
 
     response = await client.areflect(
         bank_id="customer-support",
@@ -213,18 +208,9 @@ if st.button(
                 )
             )
 
-            # -------------------------------------------------
-            # HINDSIGHT STATUS
-            # -------------------------------------------------
-
             st.success(
                 "🧠 Hindsight memory used to generate this response."
             )
-
-
-            # -------------------------------------------------
-            # DISPLAY RECALLED MEMORY
-            # -------------------------------------------------
 
             st.markdown(
                 "### 🧠 Hindsight Memory Used"
@@ -239,9 +225,7 @@ if st.button(
                         unsafe_allow_html=True
                     )
 
-                    st.write(
-                        memory.text
-                    )
+                    st.write(memory.text)
 
                     st.markdown(
                         '</div>',
@@ -254,11 +238,6 @@ if st.button(
                     "No previous memory was found for this customer."
                 )
 
-
-            # -------------------------------------------------
-            # DISPLAY AI RESPONSE
-            # -------------------------------------------------
-
             st.markdown(
                 "### 🤖 CustomerSupportAgent"
             )
@@ -266,7 +245,6 @@ if st.button(
             st.info(
                 response.text
             )
-
 
         except Exception as e:
 
