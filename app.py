@@ -18,6 +18,7 @@ if not API_KEY:
         API_KEY = st.secrets["HINDSIGHT_API_KEY"]
     except Exception:
         API_KEY = None
+st.write("Secret detected:", "HINDSIGHT_API_KEY" in st.secrets)
 if not API_KEY:
     st.error("HINDSIGHT_API_KEY is missing. Please add it to your .env file or Streamlit Secrets.")
     st.stop()
